@@ -210,6 +210,7 @@ clean:
 	rm -rf build
 	rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \
 	*.o *.d *.asm *.sym vectors.S bootblock entryother \
+	kernel/*.o kernel/*.d kernel/vectors.S \
 	drivers/*.o drivers/*.d programs/*.o programs/*.d lib/*.o lib/*.d user/*.o user/*.d \
 	initcode initcode.out kernelimage xv6.img fs.img kernelmemfs mkfs \
 	.gdbinit \
