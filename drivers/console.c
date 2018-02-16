@@ -125,6 +125,7 @@ panic(char *s)
 
 //PAGEBREAK: 50
 #define BACKSPACE 0x100
+#define CTRL_L 0x101
 #define CRTPORT 0x3d4
 static ushort *crt = (ushort*)P2V(0xb8000);  // CGA memory
 
@@ -141,7 +142,15 @@ cgaputc(int c)
 
   if(c == '\n')
     pos += 80 - pos%80;
-  else if(c == BACKSPACE){
+  else if(c == '\f'){
+      pos = 0;  // reset position
+      memset(crt, 0, sizeof(crt[0])*(25*80)); // clear
+  } else if(c == CTRL_L){
+      int row_pos = (pos/80)*80; // current row pos
+      memmove(crt, crt+row_pos, sizeof(crt[0])*row_pos); // scroll
+      pos = pos%80; // update pos
+      memset(crt+pos, 0, sizeof(crt[0])*(24*80 - pos)); // clear rest
+  } else if(c == BACKSPACE){
     if(pos > 0) --pos;
   } else
     crt[pos++] = (c&0xff) | 0x0700;  // black on white
@@ -199,6 +208,9 @@ consoleintr(int (*getc)(void))
     case C('P'):  // Process listing.
       // procdump() locks cons.lock indirectly; invoke later
       doprocdump = 1;
+      break;
+    case C('L'):  // Clear screen
+        cgaputc(CTRL_L);
       break;
     case C('U'):  // Kill line.
       while(input.e != input.w &&
@@ -296,4 +308,3 @@ consoleinit(void)
 
   ioapicenable(IRQ_KBD, 0);
 }
-
