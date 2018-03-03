@@ -1,3 +1,5 @@
+#include "pstat.h"
+
 struct stat;
 struct rtcdate;
 
@@ -20,6 +22,7 @@ int mkdir(char*);
 int chdir(char*);
 int dup(int);
 int getpid(void);
+int listpid(struct pstat*);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
