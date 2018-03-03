@@ -548,14 +548,14 @@ ps()
   struct proc *p;
   sti();
   acquire(&ptable.lock);
-  cprintf("PID      CMD      State\n");
+  cprintf("PID \t CMD \t State\n");
   for( p = ptable.proc ; p < &ptable.proc[NPROC] ; p++) {
       if (p->state == SLEEPING)
-        cprintf(" %d       %s      SLEEPING\n", p->pid, p->name);
+        cprintf(" %d \t %s \t SLEEPING\n", p->pid, p->name);
       else if (p->state == RUNNING)
-        cprintf(" %d       %s     RUNNING\n", p->pid, p->name);
+        cprintf(" %d \t %s \t RUNNING\n", p->pid, p->name);
       else if(p->state == RUNNABLE)
-        cprintf(" %d       %s      RUNNABLE\n", p->pid, p->name);
+        cprintf(" %d \t %s \t RUNNABLE\n", p->pid, p->name);
   }
   release(&ptable.lock);
   return 23;
