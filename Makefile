@@ -192,6 +192,7 @@ UPROGS=\
 	_grep\
 	_init\
 	_kill\
+	_listpid\
 	_ln\
 	_ls\
 	_mkdir\

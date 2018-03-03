@@ -6,6 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "pstat.h"
 
 int
 sys_fork(void)
@@ -40,6 +41,26 @@ int
 sys_getpid(void)
 {
   return myproc()->pid;
+}
+
+struct pstat pstat;
+int
+sys_listpid(void)
+{
+  struct pstat *p;
+  if(argptr(0, (void*)&p, sizeof(&p))<0)
+    return -1;
+  int i;
+  for(i = 0;i < NPROC; i++) {
+    p->inuse[i] = pstat.inuse[i];
+    p->pid[i] = pstat.pid[i];
+    p->name[i][0] = pstat.name[i][0];
+    p->name[i][1] = pstat.name[i][1];
+    p->name[i][2] = pstat.name[i][2];
+    p->hticks[i] = pstat.hticks[i];
+    p->lticks[i] = pstat.lticks[i];
+  }
+  return 0;
 }
 
 int
