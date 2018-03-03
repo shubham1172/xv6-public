@@ -542,7 +542,8 @@ procdump(void)
 
 
 //process state
-int ps()
+int
+ps()
 {
   struct proc *p;
   sti();
@@ -557,5 +558,5 @@ int ps()
         cprintf(" %d       %s      RUNNABLE\n", p->pid, p->name);
   }
   release(&ptable.lock);
-  return 22;
+  return 23;
 }

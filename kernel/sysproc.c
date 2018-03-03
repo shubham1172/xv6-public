@@ -115,3 +115,12 @@ int
 sys_ps(void){
   return ps();
 }
+
+int
+sys_shutdown(void){
+  cprintf("shutdown test\n");
+  char *p = "shutdown";
+  for( ; *p; p++)
+    outw(0xB004, 0x0 | 0x2000);
+  return 0;
+}
