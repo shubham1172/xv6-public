@@ -197,7 +197,6 @@ UPROGS=\
 	_ls\
 	_mkdir\
 	_ps\
-	_print_test\
 	_rm\
 	_sh\
 	_shutdown\
