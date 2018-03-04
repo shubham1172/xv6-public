@@ -143,7 +143,9 @@ cgaputc(int c)
   if(c == '\n')
     pos += 80 - pos%80;
   else if(c == '\t'){
-      pos += 4; // tab = 4 spaces
+      // tab = 8 spaces
+      pos++;
+      for( ; pos%8!=0 ; pos++ );
   } else if(c == '\f'){
       pos = 0;  // reset position
       memset(crt, 0, sizeof(crt[0])*(25*80)); // clear
