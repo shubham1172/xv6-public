@@ -3,6 +3,7 @@
 #include "types.h"
 #include "user.h"
 #include "fcntl.h"
+#include "stack.h"
 
 // Parsed command representation
 #define EXEC  1
@@ -130,10 +131,32 @@ runcmd(struct cmd *cmd)
   exit();
 }
 
+// pwd helper functions
+void print_pwd_(struct node* n){
+    if(n == 0)
+        return;
+    print_pwd_(n->prev);
+    printf(1, "%s/", n->buf);
+}
+
+void print_pwd(struct node* n){
+    printf(1, "/");
+    print_pwd_(n);
+    printf(1, "$ ");
+}
+
+void pwd_push(char* data){
+    if(strcmp(data, "..")==0)
+        stack_pop();
+    else if(strcmp(data, ".")==0){}
+    else
+        stack_push(data);
+}
+
 int
 getcmd(char *buf, int nbuf)
 {
-  printf(2, "$ ");
+  print_pwd(TOP);
   memset(buf, 0, nbuf);
   gets(buf, nbuf);
   if(buf[0] == 0) // EOF
@@ -162,6 +185,8 @@ main(void)
       buf[strlen(buf)-1] = 0;  // chop \n
       if(chdir(buf+3) < 0)
         printf(2, "cannot cd %s\n", buf+3);
+      else
+        pwd_push(buf+3);
       continue;
     }
     if(fork1() == 0)
