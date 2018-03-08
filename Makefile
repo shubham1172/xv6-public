@@ -185,9 +185,8 @@ mkfs: tools/mkfs.c include/fs.h
 .PRECIOUS: %.o
 
 UPROGS=$(shell find ./programs -type f -printf "%f\n" | sed 's/\(\w*\).c/_\1/' | sort)\
+	$(shell find ./user -type f -printf "%f\n" | sed 's/\(\w*\).c/_\1/' | sort)\
 	_init\
-	_stressfs\
-	_usertests\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
