@@ -165,11 +165,20 @@ getcmd(char *buf, int nbuf)
   return 0;
 }
 
+void
+seek_EOF(int hfd){
+    char buffer[512];
+    while(read(hfd, buffer, sizeof(buffer))){
+        // read;
+    }
+    return;
+}
+
 int
 main(void)
 {
   static char buf[100];
-  int fd;
+  int fd, hfd;
 
   // Ensure that three file descriptors are open.
   while((fd = open("console", O_RDWR)) >= 0){
@@ -181,6 +190,16 @@ main(void)
 
   // Read and run input commands.
   while(getcmd(buf, sizeof(buf)) >= 0){
+    // commit to history
+    hfd = open(".history", O_CREATE|O_RDWR);
+    seek_EOF(hfd);
+    if(hfd<0){
+        close(hfd);
+        panic("Error opening .history");
+    }
+    write(hfd, buf, strlen(buf));
+    close(hfd);
+
     if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
       // Chdir must be called by the parent, not the child.
       buf[strlen(buf)-1] = 0;  // chop \n
