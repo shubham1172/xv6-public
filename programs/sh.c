@@ -4,6 +4,7 @@
 #include "user.h"
 #include "fcntl.h"
 #include "stack.h"
+#define MAX_BUF 512
 
 // Parsed command representation
 #define EXEC  1
@@ -132,17 +133,22 @@ runcmd(struct cmd *cmd)
 }
 
 // pwd helper functions
-void print_pwd_(struct node* n){
+void get_pwd_(struct node* n, char* buf){
     if(n == 0)
         return;
-    print_pwd_(n->prev);
-    printf(1, "%s/", n->buf);
+    int i, l = strlen(buf);
+    for( i = l-1; i > -1; i--)
+        buf[i+strlen(n->buf)+1] = buf[i];
+    buf[strlen(n->buf)] = '/';
+    for( i=0; i<strlen(n->buf); i++)
+        buf[i] = n->buf[i];
+    get_pwd_(n->prev, buf);
 }
 
-void print_pwd(){
-    printf(1, "/");
-    print_pwd_(TOP); // stack top
-    printf(1, "$ ");
+char* get_pwd(){
+    char *buf = malloc(sizeof(char)*MAX_BUF);
+    get_pwd_(TOP, buf); // stack top
+    return buf;
 }
 
 void pwd_push(char* data){
@@ -167,7 +173,7 @@ void pwd_push(char* data){
 int
 getcmd(char *buf, int nbuf)
 {
-  print_pwd();
+  printf(1, "/%s$ ", get_pwd());
   memset(buf, 0, nbuf);
   gets(buf, nbuf);
   if(buf[0] == 0) // EOF
@@ -202,8 +208,7 @@ main(void)
     }
     if(buf[0] == 'p' && buf[1] == 'w' && buf[2] == 'd'){
         // pwd
-        printf(1, "/");
-        print_pwd_(TOP);
+        printf(1, "/%s", get_pwd());
         printf(1, "\n");
         continue;
     }
