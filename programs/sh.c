@@ -150,8 +150,18 @@ void pwd_push(char* data){
         stack_pop();
     else if(strcmp(data, ".")==0){}
     else if(strcmp(data, "")==0){}
-    else
-        stack_push(data);
+    else{
+        int i=0,j=0;
+        while(i<strlen(data)){
+            for( ; data[i]!='/' && data[i]!='\0' ; i++ );
+            char *buf = malloc(sizeof(char)*(i-j));
+            int k=0;
+            for( ; j<i ; j++)
+                buf[k++] = data[j];
+            stack_push(buf);
+            i++; j++;
+        }
+    }
 }
 
 int
