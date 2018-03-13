@@ -118,9 +118,6 @@ sys_ps(void){
 
 int
 sys_shutdown(void){
-  cprintf("shutdown test\n");
-  char *p = "shutdown";
-  for( ; *p; p++)
-    outw(0xB004, 0x0 | 0x2000);
+  outb(0xf4, 0x00);
   return 0;
 }
