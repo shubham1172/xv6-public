@@ -149,6 +149,7 @@ void pwd_push(char* data){
     if(strcmp(data, "..")==0)
         stack_pop();
     else if(strcmp(data, ".")==0){}
+    else if(strcmp(data, "")==0){}
     else
         stack_push(data);
 }
