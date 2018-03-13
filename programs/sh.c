@@ -139,9 +139,9 @@ void print_pwd_(struct node* n){
     printf(1, "%s/", n->buf);
 }
 
-void print_pwd(struct node* n){
+void print_pwd(){
     printf(1, "/");
-    print_pwd_(n);
+    print_pwd_(TOP); // stack top
     printf(1, "$ ");
 }
 
@@ -156,7 +156,7 @@ void pwd_push(char* data){
 int
 getcmd(char *buf, int nbuf)
 {
-  print_pwd(TOP);
+  print_pwd();
   memset(buf, 0, nbuf);
   gets(buf, nbuf);
   if(buf[0] == 0) // EOF
@@ -188,6 +188,13 @@ main(void)
       else
         pwd_push(buf+3);
       continue;
+    }
+    if(buf[0] == 'p' && buf[1] == 'w' && buf[2] == 'd'){
+        // pwd
+        printf(1, "/");
+        print_pwd_(TOP);
+        printf(1, "\n");
+        continue;
     }
     if(fork1() == 0)
       runcmd(parsecmd(buf));
