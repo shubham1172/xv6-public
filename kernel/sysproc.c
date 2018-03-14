@@ -37,6 +37,18 @@ sys_kill(void)
   return kill(pid);
 }
 
+int sys_waitp(void)
+{
+    int *wtime, *rtime;
+    if(argptr(0, (char**)&wtime, sizeof(int)) < 0)
+      return -1;
+
+    if(argptr(1, (char**)&rtime, sizeof(int)) < 0)
+      return -1;
+
+    return waitp(wtime, rtime);
+}
+
 int
 sys_getpid(void)
 {

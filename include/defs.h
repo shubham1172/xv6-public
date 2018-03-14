@@ -122,6 +122,7 @@ void            wakeup(void*);
 void            yield(void);
 int             ps(void);
 int             shutdown(void);
+int             waitp(int *, int *);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

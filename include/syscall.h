@@ -23,3 +23,4 @@
 #define SYS_listpid  22
 #define SYS_ps  23
 #define SYS_shutdown  24
+#define SYS_waitp  25
