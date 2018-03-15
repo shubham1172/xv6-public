@@ -3,8 +3,13 @@
 #include "user.h"
 #include "fcntl.h"
 
-int main()
+int
+main()
 {
-  top();
+  char *buffer = "";
+  while(strcmp(buffer, "q")!=0){
+      top();
+      gets(buffer, 2);
+  }
   exit();
 }
