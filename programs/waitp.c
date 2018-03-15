@@ -7,7 +7,7 @@ int main (int argc,char *argv[])
 {
 
 	int pid;
-	int status, a=3, b=4;
+	int status, a, b;
 	pid = fork();
 	if (pid == 0)
   	{
