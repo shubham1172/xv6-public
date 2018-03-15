@@ -162,7 +162,7 @@ tags: $(OBJS) entryother.S _init
 kernel/vectors.S: tools/vectors.pl
 	perl tools/vectors.pl > kernel/vectors.S
 
-ULIB = build/ulib.o build/usys.o build/printf.o build/umalloc.o
+ULIB = build/ulib.o build/usys.o build/printf.o build/scanf.o build/umalloc.o
 
 _%: build/%.o $(ULIB)
 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $@ $^
@@ -258,8 +258,8 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
 
 EXTRA=\
 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
-	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
-	ps.c shutdown.c printf.c umalloc.c\
+	ln.c ls.c top.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
+	ps.c shutdown.c printf.c scanf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 
