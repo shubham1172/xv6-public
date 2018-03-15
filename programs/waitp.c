@@ -7,7 +7,7 @@ int main (int argc,char *argv[])
 {
 
 	int pid;
-	int status, a, b;
+	int status, a=3, b=4;
 	pid = fork();
 	if (pid == 0)
   	{
@@ -19,6 +19,6 @@ int main (int argc,char *argv[])
  	{
     	status = waitp(&a, &b);
  	}
- 	printf(1, "Wait time = %d \\| Run time = %d \\| PID = %d \n", a, b, status);
+ 	printf(1, "Wait time = %d Run time = %d PID = %d \n", a, b, status);
  	exit();
 }
