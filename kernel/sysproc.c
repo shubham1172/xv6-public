@@ -132,7 +132,7 @@ sys_ps(void)
 int
 sys_top(void)
 {
-  return top();  
+  return top();
 }
 
 int
