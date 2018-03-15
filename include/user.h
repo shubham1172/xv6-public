@@ -29,6 +29,7 @@ int uptime(void);
 int ps(void);
 int shutdown(void);
 int waitp(int *wtime, int *rtime);
+int top(void);
 
 // ulib.c
 int stat(char*, struct stat*);

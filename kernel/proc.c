@@ -593,7 +593,6 @@ procdump(void)
   }
 }
 
-
 //process state
 int
 ps()
@@ -612,4 +611,34 @@ ps()
   }
   release(&ptable.lock);
   return 23;
+}
+
+//
+int
+top()
+{
+  int s=0, r=0, ra=0, z=0;
+  struct proc *p;
+  sti();
+  acquire(&ptable.lock);
+  for( p = ptable.proc ; p < &ptable.proc[NPROC] ; p++) {
+      if (p->state == SLEEPING)
+        s++;
+      else if (p->state == RUNNING)
+        r++;
+      else if (p->state == RUNNABLE)
+        ra++;
+      else if (p->state == ZOMBIE)
+        z++;
+  }
+  cprintf("Tasks: %d total, %d running, %d sleeping, %d stopped, %d zombie\n", s+r+ra+z, r, s, ra, z);
+  cprintf("PID \t S \t MEM \t TIME \t CMD\n");
+  for( p = ptable.proc ; p < &ptable.proc[NPROC] ; p++) {
+      if (p->state == SLEEPING)
+        cprintf(" %d \t S \t %d \t %d \t %s\n", p->pid, p->sz, p->rtime, p->name);
+      else if (p->state == RUNNING)
+        cprintf(" %d \t R \t %d \t %d \t %s\n", p->pid, p->sz, p->rtime, p->name);
+  }
+  release(&ptable.lock);
+  return 26;
 }

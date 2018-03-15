@@ -123,6 +123,7 @@ void            yield(void);
 int             ps(void);
 int             shutdown(void);
 int             waitp(int *, int *);
+int             top(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

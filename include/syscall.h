@@ -24,3 +24,4 @@
 #define SYS_ps  23
 #define SYS_shutdown  24
 #define SYS_waitp  25
+#define SYS_top  26

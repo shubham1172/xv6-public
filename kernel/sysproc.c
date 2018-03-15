@@ -124,8 +124,15 @@ sys_uptime(void)
 }
 
 int
-sys_ps(void){
+sys_ps(void)
+{
   return ps();
+}
+
+int
+sys_top(void)
+{
+  return top();  
 }
 
 int
