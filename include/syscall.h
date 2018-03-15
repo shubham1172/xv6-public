@@ -25,3 +25,4 @@
 #define SYS_shutdown  24
 #define SYS_waitp  25
 #define SYS_top  26
+#define SYS_date  27

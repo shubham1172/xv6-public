@@ -108,7 +108,7 @@ extern int sys_ps(void);
 extern int sys_shutdown(void);
 extern int sys_waitp(void);
 extern int sys_top(void);
-extern int sys_uptime(void);
+extern int sys_date(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -136,7 +136,8 @@ static int (*syscalls[])(void) = {
 [SYS_ps]   sys_ps,
 [SYS_shutdown]   sys_shutdown,
 [SYS_waitp]   sys_waitp,
-[SYS_top]   sys_top
+[SYS_top]   sys_top,
+[SYS_date]   sys_date
 };
 
 void

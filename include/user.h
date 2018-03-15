@@ -30,6 +30,7 @@ int ps(void);
 int shutdown(void);
 int waitp(int *wtime, int *rtime);
 int top(void);
+int date(struct rtcdate*);
 
 // ulib.c
 int stat(char*, struct stat*);
