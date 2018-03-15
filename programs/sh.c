@@ -170,6 +170,43 @@ void pwd_push(char* data){
     }
 }
 
+// get environment variable
+char* get_env(char* var){
+    printf(1, "entry\n");
+    int i, j, k, last;
+    char variable[512];
+    char* value = malloc(sizeof(char)*512);
+    char* buffer = malloc(sizeof(char)*2048);
+    int fd = open(".tcshrc", O_CREATE|O_RDONLY);
+    if(fd<0){
+        return value;
+    }
+    read(fd, buffer, 2048);
+    printf(1, "%s\n", buffer);
+    close(fd);
+    last = 0;
+    while(1){
+        memset(value, 0, 512);
+        memset(variable, 0, 512);
+        for( i=last ; i<strlen(buffer) && buffer[i]!='\n' ; i++ );
+        if( i==strlen(buffer) )
+            return value;
+        for( j=last ; buffer[j]!='=' ; j++){
+            variable[j-last] = buffer[j];
+        }
+        if(strcmp(var, variable)==0){
+            // found
+            for( k=j ; k<i ; k++ ){
+                value[k-j] = buffer[k];
+            }
+            return value;
+        }
+        last = i;
+    }
+
+}
+
+
 int
 getcmd(char *buf, int nbuf)
 {
@@ -390,10 +427,12 @@ struct cmd *parseline(char**, char*);
 struct cmd *parsepipe(char**, char*);
 struct cmd *parseexec(char**, char*);
 struct cmd *nulterminate(struct cmd*);
+char* parsedollar(char* s);
 
 struct cmd*
 parsecmd(char *s)
 {
+  s = parsedollar(s);
   char *es;
   struct cmd *cmd;
 
@@ -406,6 +445,30 @@ parsecmd(char *s)
   }
   nulterminate(cmd);
   return cmd;
+}
+
+char*
+parsedollar(char* s)
+{
+    int i, j, k;
+    char pre[512], suf[512], buf[50];
+    for( i=0 ; i<strlen(s) && s[i]!='$' ; i++){
+        pre[i] = s[i];
+    }
+    if(i==strlen(s))  // no dollar
+        return s;
+    for( j=i ; s[j]!=' '; j++){
+        buf[j-i] = s[j];
+    }
+    for( k=j ; k<strlen(s) ; k++){
+        suf[k-j] = s[k];
+    }
+    char* value = get_env(buf);
+    char* final = malloc(sizeof(char)*(strlen(s)+strlen(value)-strlen(buf)));
+    strcpy(final, pre);
+    strcpy(final+i, value);
+    strcpy(final+i+strlen(value), suf);
+    return final;
 }
 
 struct cmd*
