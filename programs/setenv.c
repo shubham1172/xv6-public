@@ -7,7 +7,7 @@ int
 main(int argc, char *argv[])
 {
   if(argc!=3){
-      printf(1, "USAGE: set VARIABLE VALUE\n");
+      printf(1, "USAGE: setenv VARIABLE VALUE\n");
       exit();
   }else{
       char buffer[512];
