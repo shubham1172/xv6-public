@@ -132,11 +132,19 @@ sys_ps(void)
 int
 sys_top(void)
 {
-  return top();  
+  return top();
 }
 
 int
 sys_shutdown(void){
   outb(0xf4, 0x00);
+  return 0;
+}
+
+int
+sys_date(void) {
+  struct rtcdate* date;
+  argptr(0, (void*)(&date), sizeof(*date));
+  cmostime(date);
   return 0;
 }
