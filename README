@@ -8,7 +8,7 @@ FUNCTIONALITIES ADDED
 2. automated UPROGS in Makefile
 3. modified video driver, added \t and \f
 4. added path in shell
-5. modified cd to support `$ cd` ` `
+5. modified cd to support `$ cd `
 6. added enviromnent variable support in shell
 7. commands:
     i. clear or CTRL+L - clear screen
