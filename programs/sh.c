@@ -54,6 +54,7 @@ struct backcmd {
 int fork1(void);  // Fork but panics on failure.
 void panic(char*);
 struct cmd *parsecmd(char*);
+char* parsedollar(char*);
 
 // Execute cmd.  Never returns.
 void
@@ -172,7 +173,6 @@ void pwd_push(char* data){
 
 // get environment variable
 char* get_env(char* var){
-    printf(1, "entry\n");
     int i, j, k, last;
     char variable[512];
     char* value = malloc(sizeof(char)*512);
@@ -182,7 +182,6 @@ char* get_env(char* var){
         return value;
     }
     read(fd, buffer, 2048);
-    printf(1, "%s\n", buffer);
     close(fd);
     last = 0;
     while(1){
@@ -196,14 +195,13 @@ char* get_env(char* var){
         }
         if(strcmp(var, variable)==0){
             // found
-            for( k=j ; k<i ; k++ ){
-                value[k-j] = buffer[k];
+            for( k=j+1 ; k<i ; k++ ){
+                value[k-j-1] = buffer[k];
             }
             return value;
         }
-        last = i;
+        last = i+1;
     }
-
 }
 
 
@@ -427,7 +425,6 @@ struct cmd *parseline(char**, char*);
 struct cmd *parsepipe(char**, char*);
 struct cmd *parseexec(char**, char*);
 struct cmd *nulterminate(struct cmd*);
-char* parsedollar(char* s);
 
 struct cmd*
 parsecmd(char *s)
@@ -451,14 +448,15 @@ char*
 parsedollar(char* s)
 {
     int i, j, k;
-    char pre[512], suf[512], buf[50];
+    char pre[512], suf[512];
+    char* buf = malloc(sizeof(char)*50);
     for( i=0 ; i<strlen(s) && s[i]!='$' ; i++){
         pre[i] = s[i];
     }
     if(i==strlen(s))  // no dollar
         return s;
-    for( j=i ; s[j]!=' '; j++){
-        buf[j-i] = s[j];
+    for( j=i+1 ; j<strlen(s)-1 && s[j]!=' '; j++){
+        buf[j-i-1] = s[j];
     }
     for( k=j ; k<strlen(s) ; k++){
         suf[k-j] = s[k];
